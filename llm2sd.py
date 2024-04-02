@@ -14,7 +14,7 @@ def change_to_animatediff_prompt(storyboardlist):
     # Convert the storyboard to the format required by the model
     framecnt = 0
     for storyboard in storyboardlist:
-        print(f'"{framecnt}" : "a handsome man,{storyboard["person"]},{storyboard["time"]},{storyboard["action"]}",')
+        print(f'"{framecnt}" : "a handsome man,{storyboard["person"]},{storyboard["age"]} year old,{storyboard["time"]},{storyboard["action"]},{storyboard["scene"]}",')
         framecnt += 4   
         # Process the storyboard as needed
 

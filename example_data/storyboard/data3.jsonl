@@ -1,0 +1,5 @@
+{"frame": 1, "person": "1student", "age": 16, "action": "walk into classroom", "time": "afternoon", "scene": "school"}
+{"frame": 2, "person": "1student", "age": 16, "action": "take out math book", "time": "afternoon", "scene": "math class"}
+{"frame": 3, "person": "1student", "age": 16, "action": "listen to teacher", "time": "afternoon", "scene": "math class"}
+{"frame": 4, "person": "1student", "age": 16, "action": "work on math problem", "time": "afternoon", "scene": "math class"}
+{"frame": 5, "person": "1student", "age": 16, "action": "ask question", "time": "afternoon", "scene": "math class"}

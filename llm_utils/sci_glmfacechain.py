@@ -27,7 +27,7 @@ Bonus: You'll get $20 if you get this right.
 {"frame": 5, "person": "1boy", "age": 24, "action": "go out, walk", "time": "morning", "scene": "street"}
 """),
         SystemMessage(content="Input: "),
-        HumanMessage(content=f"{input_text}, 由20帧构成"), # , 请描述每一帧的场景和时间。
+        HumanMessage(content=f"{input_text}, 由5帧构成"), # , 请描述每一帧的场景和时间。
         SystemMessage(content="Output: "),
     ]
 
@@ -40,4 +40,4 @@ llm = ChatOpenAI(
         openai_api_key="EMPTY",
         streaming=False,
     )
-print(llm(GetStableDiffusionMessages("一个男生一天的生活")).content)
+print(llm(GetStableDiffusionMessages("一个男生在学校上一节数学课的场景")).content)

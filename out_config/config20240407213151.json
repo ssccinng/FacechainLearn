@@ -1,0 +1,48 @@
+{
+    "name": "cgmi",
+    "path": "models/sd/majicmixRealistic_v7.safetensors",
+    "motion_module": "models/motion-module/mm_sd_v15_v2.ckpt",
+    "compile": false,
+    "seed": [
+        -1
+    ],
+    "scheduler": "euler",
+    "steps": 20,
+    "guidance_scale": 8,
+    "clip_skip": 2,
+    "prompt_fixed_ratio": 0.1,
+    "head_prompt": "",
+    "prompt_map": {
+        "0": "1boy,24 year old,weekend,get up, Open your eyes,bedroom",
+        "4": "1boy,24 year old,weekend,Eating breakfast, Sitting on a chair,kitchen",
+        "8": "1boy,24 year old,weekend,Reading a book, Relaxing on the bed,bedroom",
+        "12": "1boy,24 year old,weekend,Taking a shower, washing away the week,bathroom",
+        "16": "1boy,24 year old,weekend,Going for a walk in the park, Enjoying the weekend,park",
+        "20": "1boy,24 year old,morning,walk to park,park",
+        "24": "1boy,24 year old,afternoon,admiring beautiful scenery,park",
+        "28": "1boy,24 year old,afternoon,playing with children,park",
+        "32": "1boy,24 year old,afternoon,sitting on a bench, enjoying the view,park",
+        "36": "1boy,24 year old,afternoon,leaving the park, walking home,outside the park",
+        "40": "1boy,24 year old,afternoon,sitting on the sofa,living room",
+        "44": "1boy,24 year old,afternoon,take popcorn and candy,living room",
+        "48": "1boy,24 year old,afternoon,watching movie,living room",
+        "52": "1boy,24 year old,afternoon,enjoying the plot,living room",
+        "56": "1boy,24 year old,afternoon,relax on the sofa,living room",
+        "60": "1boy,24 year old,evening,meet friends at party,party",
+        "64": "1boy,24 year old,evening,drink alcohol with friends,party",
+        "68": "1boy,24 year old,evening,play games with friends,party",
+        "72": "1boy,24 year old,evening,dance with friends,party",
+        "76": "1boy,24 year old,evening,go out, have fun,outside",
+        "80": "1young man,26 year old,evening,Pumping iron, serious and focused,gym",
+        "84": "1young man,26 year old,evening,Running on a treadmill, determined,cardio room",
+        "88": "1young man,26 year old,evening,Stretching before exercise, flexibility,gym",
+        "92": "1young man,26 year old,evening,Cooling down, walking slowly,gym",
+        "96": "1young man,26 year old,evening,Smiling, feeling accomplished,outside gym"
+    },
+    "tail_prompt": "",
+    "n_prompt": [
+        "FastNegativeV2, (bad-artist:1), (worst quality, low quality:1.4), (bad_prompt_version2:0.8), bad-hands-5, lowres, bad anatomy, bad hands, ((text)), (watermark), error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, ((username)), blurry, (extra limbs), bad-artist-anime, badhandv4, EasyNegative, ng_deepnegative_v1_75t, verybadimagenegative_v1.3, BadDream, (three hands:1.3), (three legs:1.2), (more than two hands:1.4), (more than two legs,:1.4), label, watermark, "
+    ],
+    "lora_map": {},
+    "motion_lora_map": {}
+}

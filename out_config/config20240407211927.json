@@ -1,0 +1,39 @@
+{
+    "name": "cgmi",
+    "path": "models/sd/majicmixRealistic_v7.safetensors",
+    "motion_module": "models/motion-module/mm_sd_v15_v2.ckpt",
+    "compile": false,
+    "seed": [
+        -1
+    ],
+    "scheduler": "euler",
+    "steps": 20,
+    "guidance_scale": 8,
+    "clip_skip": 2,
+    "prompt_fixed_ratio": 0.1,
+    "head_prompt": "",
+    "tail_prompt": "",
+    "n_prompt": [
+        "worst quality, low quality"
+    ],
+    "lora_map": {},
+    "motion_lora_map": {},
+    "prompt_map": {
+        "0": "1boy,24 year old,morning,wake up, weekend,bedroom",
+        "6": "1boy,24 year old,morning,eating breakfast,kitchen",
+        "12": "1boy,24 year old,morning,relaxing, enjoying food,table",
+        "18": "1boy,24 year old,morning,walk to park,home",
+        "25": "1boy,24 year old,afternoon,take off shoes, put on sneakers,park",
+        "31": "1boy,24 year old,afternoon,exercise, run, play sports,park",
+        "37": "1boy,24 year old,afternoon,go for a walk, have a rest,park",
+        "43": "1boy,24 year old,afternoon,sit on the sofa,living room",
+        "50": "1boy,24 year old,afternoon,take a snack,living room",
+        "56": "1boy,24 year old,afternoon,pause the movie,living room",
+        "62": "1boy,24 year old,afternoon,watch the movie intently,living room",
+        "68": "1boy,24 year old,afternoon,finish the movie and get up,living room",
+        "75": "1boy,24 year old,afternoon, wearing casual clothes, living room",
+        "81": "1boy,24 year old,afternoon,Checking phone, messaging friends,living room",
+        "87": "1boy,24 year old,afternoon,Packing a bag, putting on a mask,outdoor",
+        "93": "1boy,24 year old,evening,Meeting with friends at restaurant,restaurant"
+    }
+}

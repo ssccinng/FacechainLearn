@@ -10,12 +10,16 @@ def read_jsonl_file(file_path):
             data_list.append(data)
     return data_list
 
-def change_to_animatediff_prompt(storyboardlist):
+
+def change_to_animatediff_prompt(storyboardlist, max_frame = 100):
     # Convert the storyboard to the format required by the model
     # framecnt = 0
     res = {}
+    framecnt = len(storyboardlist)
+    idx = 0
     for storyboard in storyboardlist:
-        res[storyboard['frame']] = f'{storyboard["person"]},{storyboard["age"]} year old,{storyboard["time"]},{storyboard["action"]},{storyboard["scene"]}'
+        res[idx * max_frame // framecnt] = f'{storyboard["person"]},{storyboard["age"]} year old,{storyboard["time"]},{storyboard["action"]},{storyboard["scene"]}'
+        idx += 1
         # print(f'"{framecnt}" : "a handsome man,{storyboard["person"]},{storyboard["age"]} year old,{storyboard["time"]},{storyboard["action"]},{storyboard["scene"]}",')
         # framecnt += 10   
         # Process the storyboard as needed
@@ -24,7 +28,7 @@ def change_to_animatediff_prompt(storyboardlist):
 def generate_animatediff_config(storyboard, lora_model = None, negative_prompt = None):
     configTemplate = json.load(open('config_template/template.json'))
 
-    configTemplate['prompt'] = storyboard
+    configTemplate['prompt_map'] = storyboard
 
     if lora_model:
         configTemplate['prompt']['lora_map'] = {lora_model: 1.0}
@@ -35,7 +39,7 @@ def generate_animatediff_config(storyboard, lora_model = None, negative_prompt =
     # 获取当前时间作为文件名
     import time
     filename = time.strftime("%Y%m%d%H%M%S", time.localtime())
-    filename = f'config{filename}.json'
+    filename = f'outconfig/config{filename}.json'
     json.dump(configTemplate, open(filename, 'w'), indent=4)
 
 

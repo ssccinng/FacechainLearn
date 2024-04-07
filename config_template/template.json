@@ -1,0 +1,35 @@
+{
+  "name":"cgmi",
+  "path": "models/sd/majicmixRealistic_v7.safetensors",
+  "motion_module":"models/motion-module/mm_sd_v15_v2.ckpt",
+  "compile": false,
+  "seed": [
+    -1
+  ],
+  "scheduler": "euler",
+  "steps": 20,
+  "guidance_scale": 8,
+  "clip_skip": 2,
+  "prompt_fixed_ratio": 0.1,
+
+
+
+ "head_prompt": "",
+  "prompt_map": {
+    "0" : "1girl, solo, cherry blossom, hanami, pink flower, white flower, spring season, wisteria, petals, flower, plum blossoms, outdoors, falling petals, black eyes, upper body, from left side, white kimono, purple hair",
+    "24" : "1girl, solo, orange leaves, yellow leaves, fall season, outdoors, falling leaves, black eyes, upper body, from left side, white kimono, purple hair",
+    "47" : "1girl, solo, cherry blossom, hanami, pink flower, white flower, spring season, wisteria, petals, flower, plum blossoms, outdoors, falling petals, black eyes, upper body, from left side, white kimono, purple hair"
+  },
+  "tail_prompt": "",
+  "n_prompt": [
+    "worst quality, low quality"
+  ],
+
+  "lora_map": {
+
+  },
+  "motion_lora_map": {
+
+  }
+
+}

@@ -1,5 +1,6 @@
 import gradio as gr
 import os
+from facellm import facellm
 
 from facechain.facechain.utils import snapshot_download, check_ffmpeg, set_spawn_method, project_dir, join_worker_data_dir
 # os.environ["http_proxy"] = "http://127.0.0.1:10800"
@@ -7,7 +8,9 @@ os.environ["https_proxy"] = "http://127.0.0.1:10800"
 
 # os.chdir('animatediff-cli-prompt-travel')
 from animatediff.cli import cli
+from llm2sd import generate_animatediff_config
 
+import json
 
 
 animateDiff_Model_Path = 'animatediff-cli-prompt-travel/data/models/sd'
@@ -50,6 +53,11 @@ def update_output_model(uuid):
     return gr.Radio.update(choices=folder_list)
 
 def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt):
+
+    fllm = facellm(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
+    fllm.get_storyboard_from_prompt(prompt)
+
+
     # 调用animateDiff生成图片
     # 修改运行路径到animatediff-cli-prompt-travel
 

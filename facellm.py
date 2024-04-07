@@ -23,7 +23,7 @@ class facellm:
     # output: [frame1, frame2, ...]
     # TODO: 在这里补充frame的json格式
     def get_short_storyboard(self, prompt) -> list:
-
+        
         messages = [
             SystemMessage(content=prompt),
             HumanMessage(content=""),

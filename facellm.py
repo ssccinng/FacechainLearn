@@ -76,14 +76,14 @@ class facellm_test:
         SystemMessage(content=
 """
 你是一个分镜师，需要根据用户给出的场景给出一个分镜的具体描述信息。
-You must strictly output in JSON format.
+You must output strictly according to the data format of the example, otherwise you will be punished accordingly,
 You must provide a good enough storyboard, otherwise you will be punished accordingly,
 You don't need to output any content outside of the format.
 Bonus: You'll get $20 if you get this right.
 """),
-        SystemMessage(content="Input: "),
+        SystemMessage(content="Example Input: "),
         HumanMessage(content="一个男生早上起床时要做的事, 由5帧构成"), # , 请描述每一帧的场景和时间。
-        SystemMessage(content="Output: "),
+        SystemMessage(content="Example Output: "),
         AIMessage(content=
 """
 {"frame": 1, "person": "1boy", "age": 24, "action": "get up, Open your eyes", "time": "morning", "scene": "bedroom"}
@@ -119,6 +119,7 @@ Bonus: You'll get $20 if you get this right.
         SystemMessage(content="Input: "),
         HumanMessage(content=prompt),
         SystemMessage(content="Output: "),
+
 
         ]
         data = self.llm(messages).content

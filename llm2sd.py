@@ -41,7 +41,7 @@ def generate_animatediff_config(storyboard, lora_model = None, negative_prompt =
     filename = time.strftime("%Y%m%d%H%M%S", time.localtime())
     filename = f'out_config/config{filename}.json'
     json.dump(configTemplate, open(filename, 'w'), indent=4)
-
+    return filename
 
 
 if __name__ == '__main__':

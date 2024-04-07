@@ -1,0 +1,44 @@
+{
+    "name": "cgmi",
+    "path": "models/sd/majicmixRealistic_v7.safetensors",
+    "motion_module": "models/motion-module/mm_sd_v15_v2.ckpt",
+    "compile": false,
+    "seed": [
+        -1
+    ],
+    "scheduler": "euler",
+    "steps": 20,
+    "guidance_scale": 8,
+    "clip_skip": 2,
+    "prompt_fixed_ratio": 0.1,
+    "head_prompt": "",
+    "prompt_map": {
+        "0": "1girl,22 year old,morning,get up, Open your eyes,bedroom",
+        "14": "1girl,22 year old,morning,Washing and rinsing,bathroom",
+        "28": "1girl,22 year old,morning,Eating breakfast, Sitting on a chair,kitchen",
+        "42": "1girl,22 year old,morning,Put on makeup,dressing,bedroom",
+        "57": "1girl,22 year old,morning,go out, walk,street",
+        "71": "1girl,22 year old,morning,look at the mirror,bathroom",
+        "85": "1girl,25 year old,afternoon,get on the bus,bus stop",
+        "100": "1girl,25 year old,afternoon,find a seat,bus interior",
+        "114": "1girl,25 year old,afternoon,read a book,bus interior",
+        "128": "1girl,25 year old,afternoon,listen to music,bus interior",
+        "142": "1girl,25 year old,afternoon,take out phone,bus stop",
+        "157": "1girl,25 year old,afternoon,go off the bus,outside the bus stop",
+        "171": "1girl,22 year old,afternoon,walk into the mall,mall",
+        "185": "1girl,22 year old,afternoon,look around at the stores,mall",
+        "200": "1girl,22 year old,afternoon,try on clothes,clothing store",
+        "214": "1girl,22 year old,afternoon,select a gift,gift shop",
+        "228": "1girl,22 year old,afternoon,checkout,store check-out",
+        "242": "1girl,22 year old,afternoon,walk to the food court,food court",
+        "257": "1girl,22 year old,afternoon,eat lunch,food court",
+        "271": "1girl,22 year old,afternoon,shopping bag collection,mall",
+        "285": "1girl,22 year old,afternoon,leave the mall,outside mall"
+    },
+    "tail_prompt": "",
+    "n_prompt": [
+        "FastNegativeV2, (bad-artist:1), (worst quality, low quality:1.4), (bad_prompt_version2:0.8), bad-hands-5, lowres, bad anatomy, bad hands, ((text)), (watermark), error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, ((username)), blurry, (extra limbs), bad-artist-anime, badhandv4, EasyNegative, ng_deepnegative_v1_75t, verybadimagenegative_v1.3, BadDream, (three hands:1.3), (three legs:1.2), (more than two hands:1.4), (more than two legs,:1.4), label, watermark, nsfw, "
+    ],
+    "lora_map": {},
+    "motion_lora_map": {}
+}

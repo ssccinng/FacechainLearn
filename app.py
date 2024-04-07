@@ -54,7 +54,8 @@ def update_output_model(uuid):
 
 def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt):
 
-    fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
+    # fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
+    fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "http://localhost:8000/v1","gpt-3.5-turbo-16k")
     sb = fllm.get_storyboard_from_prompt(prompt)
     prompt = change_to_animatediff_prompt(sb, 100)
     file = generate_animatediff_config(prompt)
@@ -64,7 +65,7 @@ def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt
 
     # 切换到别的conda环境
     # os.system("conda activate animatept")
-    path = os.system(f"python animatediff-cli-prompt-travel/src/animatediff/__main__.py generate -c  {file} -W 512 -H 512 -L 300 -C 16")
+    path = os.system(f"python animatediff-cli-prompt-travel/src/animatediff/__main__.py generate -c {file} -W 512 -H 512 -L 100 -C 16")
     # cli.command("generate -c  config/prompts/test.json -W 512 -H 512 -L 48 -C 16")
     # cli.invoke(command, param="generate -c  config/prompts/test.json -W 512 -H 512 -L 48 -C 16")
     # print(path)

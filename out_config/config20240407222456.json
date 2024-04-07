@@ -1,0 +1,41 @@
+{
+    "name": "cgmi",
+    "path": "models/sd/majicmixRealistic_v7.safetensors",
+    "motion_module": "models/motion-module/mm_sd_v15_v2.ckpt",
+    "compile": false,
+    "seed": [
+        -1
+    ],
+    "scheduler": "euler",
+    "steps": 20,
+    "guidance_scale": 8,
+    "clip_skip": 2,
+    "prompt_fixed_ratio": 0.1,
+    "head_prompt": "",
+    "prompt_map": {
+        "0": "1boy,24 year old,morning,put on,house",
+        "5": "1boy,24 year old,morning,go to,outside basketball court",
+        "11": "1boy,24 year old,morning,play basketball,basketball court",
+        "16": "1boy,24 year old,afternoon,running on basketball court,basketball court",
+        "22": "1boy,24 year old,afternoon,dribbling the ball,basketball court",
+        "27": "1boy,24 year old,afternoon,shooting a layup,basketball court",
+        "33": "1boy,24 year old,afternoon,defending the ball,basketball court",
+        "38": "1boy,24 year old,afternoon,jumping for a dunk,basketball court",
+        "44": "1boy,24 year old,afternoon,dribbling,basketball court",
+        "50": "1boy,24 year old,afternoon,shooting,basketball court",
+        "55": "1boy,24 year old,afternoon,\u8df3\u6295,basketball court",
+        "61": "1boy,24 year old,afternoon,\u6295\u7bee,basketball court",
+        "66": "1boy,24 year old,afternoon,running,stadium",
+        "72": "1boy,24 year old,afternoon,jump,stadium",
+        "77": "1boy,24 year old,afternoon,catch ball,stadium",
+        "83": "1boy,24 year old,afternoon,run,stadium",
+        "88": "1boy,24 year old,afternoon,high five,stadium",
+        "94": "1boy,24 year old,afternoon,look at camera,outside stadium"
+    },
+    "tail_prompt": "",
+    "n_prompt": [
+        "FastNegativeV2, (bad-artist:1), (worst quality, low quality:1.4), (bad_prompt_version2:0.8), bad-hands-5, lowres, bad anatomy, bad hands, ((text)), (watermark), error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, ((username)), blurry, (extra limbs), bad-artist-anime, badhandv4, EasyNegative, ng_deepnegative_v1_75t, verybadimagenegative_v1.3, BadDream, (three hands:1.3), (three legs:1.2), (more than two hands:1.4), (more than two legs,:1.4), label, watermark, nsfw, "
+    ],
+    "lora_map": {},
+    "motion_lora_map": {}
+}

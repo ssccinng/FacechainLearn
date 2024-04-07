@@ -1,0 +1,50 @@
+{
+    "name": "cgmi",
+    "path": "models/sd/majicmixRealistic_v7.safetensors",
+    "motion_module": "models/motion-module/mm_sd_v15_v2.ckpt",
+    "compile": false,
+    "seed": [
+        -1
+    ],
+    "scheduler": "euler",
+    "steps": 20,
+    "guidance_scale": 8,
+    "clip_skip": 2,
+    "prompt_fixed_ratio": 0.1,
+    "head_prompt": "",
+    "prompt_map": {
+        "0": "1boy,24 year old,weekend,get up, Open your eyes,bedroom",
+        "11": "1boy,24 year old,weekend,Have a quick snack,living room",
+        "22": "1boy,24 year old,weekend,Watch TV or read a book, living room",
+        "33": "1boy,24 year old,weekend,Take a shower,bathroom",
+        "44": "1boy,24 year old,weekend,Go for a walk in the park,park",
+        "55": "1boy,24 year old,weekend,Reflect on the day and plan for tomorrow,bedroom",
+        "66": "1man,28 year old,morning,walk to park,house",
+        "77": "1man,28 year old,morning,buy ticket,park gate",
+        "88": "1man,28 year old,morning,walk in park,park",
+        "100": "1man,28 year old,morning,leave park,park gate",
+        "111": "1boy,24 year old,afternoon,sit on the sofa,living room",
+        "122": "1boy,24 year old,afternoon,take the remote control,living room",
+        "133": "1boy,24 year old,afternoon,search for a movie,living room",
+        "144": "1boy,24 year old,afternoon,select a movie,living room",
+        "155": "1boy,24 year old,afternoon,watch the movie,living room",
+        "166": "1boy,24 year old,afternoon,eat popcorn,living room",
+        "177": "1boy,24 year old,afternoon,drink soda,living room",
+        "188": "1boy,24 year old,afternoon,take notes,living room",
+        "200": "1boy,24 year old,afternoon,fast forward,living room",
+        "211": "1boy,24 year old,afternoon,stop the movie,living room",
+        "222": "1boy,24 year old,evening,meet friends at a bar,bar",
+        "233": "1boy,24 year old,evening,order drinks, talk with friends,bar",
+        "244": "1boy,24 year old,evening,enjoy food, laugh with friends,restaurant",
+        "255": "1boy,24 year old,night,drink too much, dance with friends,club",
+        "266": "1boy,24 year old,night,go home, feel tired,bedroom",
+        "277": "1boy,24 year old,night,sleep, dream,bed",
+        "288": "1boy,24 year old,morning,wake up, start a new day,bedroom"
+    },
+    "tail_prompt": "",
+    "n_prompt": [
+        "FastNegativeV2, (bad-artist:1), (worst quality, low quality:1.4), (bad_prompt_version2:0.8), bad-hands-5, lowres, bad anatomy, bad hands, ((text)), (watermark), error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, ((username)), blurry, (extra limbs), bad-artist-anime, badhandv4, EasyNegative, ng_deepnegative_v1_75t, verybadimagenegative_v1.3, BadDream, (three hands:1.3), (three legs:1.2), (more than two hands:1.4), (more than two legs,:1.4), label, watermark, nsfw, "
+    ],
+    "lora_map": {},
+    "motion_lora_map": {}
+}

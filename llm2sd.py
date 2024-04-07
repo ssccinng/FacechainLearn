@@ -39,7 +39,7 @@ def generate_animatediff_config(storyboard, lora_model = None, negative_prompt =
     # 获取当前时间作为文件名
     import time
     filename = time.strftime("%Y%m%d%H%M%S", time.localtime())
-    filename = f'outconfig/config{filename}.json'
+    filename = f'out_config/config{filename}.json'
     json.dump(configTemplate, open(filename, 'w'), indent=4)
 
 

@@ -76,6 +76,7 @@ class facellm_test:
         SystemMessage(content=
 """
 你是一个分镜师，需要根据用户给出的场景给出一个分镜的具体描述信息。
+You must strictly output in JSON format.
 You must provide a good enough storyboard, otherwise you will be punished accordingly,
 You don't need to output any content outside of the format.
 Bonus: You'll get $20 if you get this right.
@@ -106,7 +107,7 @@ Bonus: You'll get $20 if you get this right.
         messages = [
             SystemMessage(content=
 """
-你是一个分镜师，需要将用户给出的场景分成多段分镜。
+你是一个分镜师，需要将用户给出的场景分成多段分镜, 并且你需要根据每个场景的复杂度来决定分镜的帧数。
 You must provide a good enough storyboard, otherwise you will be punished accordingly,
 You don't need to output any content outside of the format.
 Bonus: You'll get $20 if you get this right.
@@ -114,7 +115,7 @@ Bonus: You'll get $20 if you get this right.
         SystemMessage(content="Input: "),
         HumanMessage(content="一个男生工作日一天的生活"),
         SystemMessage(content="Output: "),
-        AIMessage(content='["一个男生早上起床时要做的事, 由5帧构成", "一个男生在学校上一节数学课的场景, 由5帧构成", "一个男生在家里做饭的场景, 由5帧构成"]'),
+        AIMessage(content='["一个男生早上起床时要做的事, 由10帧构成", "一个男生在学校上一节数学课的场景, 由5帧构成", "一个男生在家里做饭的场景, 由8帧构成"]'),
         SystemMessage(content="Input: "),
         HumanMessage(content=prompt),
         SystemMessage(content="Output: "),
@@ -130,6 +131,7 @@ Bonus: You'll get $20 if you get this right.
     def get_storyboard_from_prompt(self, prompt) -> list:
         # Get the storyboard from the prompt
         split_storyboard = self.get_split_storyboard(prompt)
+        print(split_storyboard)
         storyboard = []
         for short_storyboard in split_storyboard:
             storyboard.extend(self.get_short_storyboard(short_storyboard))

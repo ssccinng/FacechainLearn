@@ -1,6 +1,6 @@
 import gradio as gr
 import os
-from facellm import facellm
+from facellm import facellm, facellm_test
 
 from facechain.facechain.utils import snapshot_download, check_ffmpeg, set_spawn_method, project_dir, join_worker_data_dir
 # os.environ["http_proxy"] = "http://127.0.0.1:10800"
@@ -8,7 +8,7 @@ os.environ["https_proxy"] = "http://127.0.0.1:10800"
 
 # os.chdir('animatediff-cli-prompt-travel')
 from animatediff.cli import cli
-from llm2sd import generate_animatediff_config
+from llm2sd import change_to_animatediff_prompt, generate_animatediff_config
 
 import json
 
@@ -54,16 +54,17 @@ def update_output_model(uuid):
 
 def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt):
 
-    fllm = facellm(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
-    fllm.get_storyboard_from_prompt(prompt)
-
+    fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
+    sb = fllm.get_storyboard_from_prompt(prompt)
+    prompt = change_to_animatediff_prompt(sb, 100)
+    file = generate_animatediff_config(prompt)
 
     # 调用animateDiff生成图片
     # 修改运行路径到animatediff-cli-prompt-travel
 
     # 切换到别的conda环境
     # os.system("conda activate animatept")
-    path = os.system(f"python animatediff-cli-prompt-travel/src/animatediff/__main__.py generate -c  animatediff-cli-prompt-travel/config/prompts/test.json -W 512 -H 512 -L 48 -C 16")
+    path = os.system(f"python animatediff-cli-prompt-travel/src/animatediff/__main__.py generate -c  {file} -W 512 -H 512 -L 300 -C 16")
     # cli.command("generate -c  config/prompts/test.json -W 512 -H 512 -L 48 -C 16")
     # cli.invoke(command, param="generate -c  config/prompts/test.json -W 512 -H 512 -L 48 -C 16")
     # print(path)
@@ -174,8 +175,9 @@ def generate_input():
                     model = gr.components.Dropdown(choices=animateDiff_Models, label="选择模型")
                     lora_model = gr.components.Dropdown(choices=['LoraModel1', 'LoraModel2', 'LoraModel3'], label="选择Lora模型")
                     prompt = gr.components.Textbox(lines=2, placeholder='在这里输入prompt...', label="输入Prompt")
+                    framecnt = gr.Number(label="帧数(Frame count)", default=100, min=1, max=1000, step=1)
                     with gr.Accordion("高级选项(Advanced options)"):
-                        gr.Textbox(label="负向提示词(Advanced options)", lines=1)
+                        nprompt = gr.Textbox(label="负向提示词(Advanced options)", lines=1)
                     with gr.Row():
                         run_button = gr.Button("生成图片", )
                     image = gr.outputs.Image(type="filepath", label="生成的图片")

@@ -1,5 +1,5 @@
 output/2024-04-06T21-30-40-cgmi-majicmixrealistic_v7/00_5984057981368725299_1girl_wizard_circlet_earrings_jewelry_1girl.gif
-output/2024-04-06T21-30-40-cgmi-majicmixrealistic_v7/prompt.json
+output/**
 output/2024-04-06T21-30-40-cgmi-majicmixrealistic_v7/raw_prompt.json
 output/2024-04-06T21-30-40-cgmi-majicmixrealistic_v7/00-5984057981368725299/00000000.png
 output/2024-04-06T21-30-40-cgmi-majicmixrealistic_v7/00-5984057981368725299/00000001.png
@@ -1378,3 +1378,4 @@ out_config/config20240408105914.json
 out_config/config20240408110738.json
 out_config/config20240408113231.json
 out_config/config20240408113555.json
+/.vs

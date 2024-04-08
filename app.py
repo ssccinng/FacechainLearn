@@ -17,7 +17,7 @@ import json
 
  
 animateDiff_Model_Path = 'animatediff-cli-prompt-travel/data/models/sd'
-facechain_lora_Model_Path = 'facechain/worker_data/qw/ly261666/cv_portrait_model'
+facechain_lora_Model_Path = 'faceoutput'
 
 SDXL_BASE_MODEL_ID = 'AI-ModelScope/stable-diffusion-xl-base-1.0'
 
@@ -61,7 +61,7 @@ def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt
     width = int(width)
     height = int(height)
     # fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
-    fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "http://localhost:8000/v1","gpt-3.5-turbo-16k")
+    fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", openai_api_baseurl,"gpt-3.5-turbo-16k")
     sb = fllm.get_storyboard_from_prompt(prompt)
     prompt = change_to_animatediff_prompt(sb, framecnt)
     file = generate_animatediff_config(prompt, f"models/sd/{model}", lora_model)
@@ -85,12 +85,17 @@ def train_lora(uuid,
                              base_model_name,
                              instance_images,
                              output_model_name,):
+    
+    imgfolder = f'./imgs/{output_model_name}'
+    # 把图片下载到facechain/facechain/imgs文件夹下
+    for file in instance_images:
+        snapshot_download(file, imgfolder)
 
     os.system(f"""accelerate launch facechain/facechain/train_text_to_image_lora.py \
     --pretrained_model_name_or_path=ly261666/cv_portrait_model \
     --revision=v2.0 \
     --sub_path=film/film \
-    --dataset_name=./imgs \
+    --dataset_name={imgfolder} \
     --output_dataset_name=./processed \
     --caption_column="text" \
     --resolution=512 --random_flip \
@@ -101,7 +106,8 @@ def train_lora(uuid,
     --output_dir=./faceoutput \
     --lora_r=4 --lora_alpha=32 \
     --lora_text_encoder_r=32 --lora_text_encoder_alpha=32""")
-    changelora('faceoutput/pytorch_lora_weights.bin', f'faceoutput/{output_model_name}.safetensors')
+    modelpath = f'faceoutput/{output_model_name}.safetensors'
+    changelora('faceoutput/pytorch_lora_weights.bin', modelpath)
 
     #   --resume_from_checkpoint='fromfacecommon'
     # 在这里添加你的Lora训练代码
@@ -198,11 +204,12 @@ def generate_input():
             with gr.Column():
                 with gr.Box():
                     openai_api_key = gr.Textbox(label="OpenAI API Key", lines=1)
-                    openai_api_baseurl = gr.Textbox(label="OpenAI API Base URL", lines=1)
+                    openai_api_baseurl = gr.Textbox(label="OpenAI API Base URL", value="http://localhost:8000/v1" , lines=1)
 
                     animateDiff_Models = [file for file in os.listdir(animateDiff_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt') ]
+                    lora_models = [file for file in os.listdir(facechain_lora_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt')]
                     model = gr.components.Dropdown(choices=animateDiff_Models, label="选择模型")
-                    lora_model = gr.components.Dropdown(choices=['LoraModel1', 'LoraModel2', 'LoraModel3'], label="选择Lora模型")
+                    lora_model = gr.components.Dropdown(choices=lora_models, label="选择Lora模型")
                     prompt = gr.components.Textbox(lines=2, placeholder='在这里输入prompt...', label="输入Prompt")
                     with gr.Row():
                         width = gr.Number(label="图片宽度(Width)", default=512, min=1, max=1000, step=1, value=512)

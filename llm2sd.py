@@ -18,7 +18,7 @@ def change_to_animatediff_prompt(storyboardlist, max_frame = 100):
     framecnt = len(storyboardlist)
     idx = 0
     for storyboard in storyboardlist:
-        res[idx * max_frame // framecnt] = f'{storyboard["person"]},{storyboard["age"]} year old,{storyboard["time"]},{storyboard["action"]},{storyboard["scene"]}'
+        res[idx * max_frame // framecnt] = f'{storyboard.get("person", "1boy")},{storyboard.get("age", "")} year old,{storyboard.get("time", "")},{storyboard.get("status", "")},{storyboard.get("scene", "")}'
         idx += 1
         # print(f'"{framecnt}" : "a handsome man,{storyboard["person"]},{storyboard["age"]} year old,{storyboard["time"]},{storyboard["action"]},{storyboard["scene"]}",')
         # framecnt += 10   
@@ -34,7 +34,7 @@ def generate_animatediff_config(storyboard, model = None, lora_model = None, neg
         configTemplate['path'] = model
 
     if lora_model:
-        configTemplate['prompt']['lora_map'] = {lora_model: 1.0}
+        configTemplate['prompt']['lora_map'] = {f'../../faceoutput/{lora_model}': 1.0}
     
     if negative_prompt:
         configTemplate['prompt']['n_prompt'] = negative_prompt

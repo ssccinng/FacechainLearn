@@ -14,6 +14,7 @@ import json
 
 
 animateDiff_Model_Path = 'animatediff-cli-prompt-travel/data/models/sd'
+facechain_lora_Model_Path = 'facechain/worker_data/qw/ly261666/cv_portrait_model'
 
 SDXL_BASE_MODEL_ID = 'AI-ModelScope/stable-diffusion-xl-base-1.0'
 
@@ -52,20 +53,20 @@ def update_output_model(uuid):
 
     return gr.Radio.update(choices=folder_list)
 
-def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt):
-
+def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt, framecnt, width, height):
+    framecnt = int(framecnt)
     # fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
     fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "http://localhost:8000/v1","gpt-3.5-turbo-16k")
     sb = fllm.get_storyboard_from_prompt(prompt)
-    prompt = change_to_animatediff_prompt(sb, 100)
-    file = generate_animatediff_config(prompt)
+    prompt = change_to_animatediff_prompt(sb, framecnt)
+    file = generate_animatediff_config(prompt, f"models/sd/{model}", lora_model)
 
     # 调用animateDiff生成图片
     # 修改运行路径到animatediff-cli-prompt-travel
 
     # 切换到别的conda环境
     # os.system("conda activate animatept")
-    path = os.system(f"python animatediff-cli-prompt-travel/src/animatediff/__main__.py generate -c {file} -W 512 -H 512 -L 100 -C 16")
+    path = os.system(f"python animatediff-cli-prompt-travel/src/animatediff/__main__.py generate -c {file} -W {width} -H {height} -L {framecnt} -C 16")
     # cli.command("generate -c  config/prompts/test.json -W 512 -H 512 -L 48 -C 16")
     # cli.invoke(command, param="generate -c  config/prompts/test.json -W 512 -H 512 -L 48 -C 16")
     # print(path)
@@ -176,7 +177,10 @@ def generate_input():
                     model = gr.components.Dropdown(choices=animateDiff_Models, label="选择模型")
                     lora_model = gr.components.Dropdown(choices=['LoraModel1', 'LoraModel2', 'LoraModel3'], label="选择Lora模型")
                     prompt = gr.components.Textbox(lines=2, placeholder='在这里输入prompt...', label="输入Prompt")
-                    framecnt = gr.Number(label="帧数(Frame count)", default=100, min=1, max=1000, step=1)
+                    with gr.Row():
+                        width = gr.Number(label="图片宽度(Width)", default=512, min=1, max=1000, step=1, value=512)
+                        height = gr.Number(label="图片高度(Height)", default=512, min=1, max=1000, step=1, value=512)
+                        framecnt = gr.Number(label="帧数(Frame count)", default=100, min=1, max=1000, step=1, value=100)
                     with gr.Accordion("高级选项(Advanced options)"):
                         nprompt = gr.Textbox(label="负向提示词(Advanced options)", lines=1)
                     with gr.Row():
@@ -202,7 +206,9 @@ def generate_input():
                              lora_model,
                              openai_api_key,
                              openai_api_baseurl,
-                             prompt
+                             prompt,
+                             framecnt,
+                             width, height
                          ],
                          outputs=image)
     pass

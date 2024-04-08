@@ -25,10 +25,13 @@ def change_to_animatediff_prompt(storyboardlist, max_frame = 100):
         # Process the storyboard as needed
     return res
 
-def generate_animatediff_config(storyboard, lora_model = None, negative_prompt = None):
+def generate_animatediff_config(storyboard, model = None, lora_model = None, negative_prompt = None):
     configTemplate = json.load(open('config_template/template.json'))
 
     configTemplate['prompt_map'] = storyboard
+
+    if model:
+        configTemplate['path'] = model
 
     if lora_model:
         configTemplate['prompt']['lora_map'] = {lora_model: 1.0}

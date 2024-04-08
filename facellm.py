@@ -70,13 +70,14 @@ class facellm_test:
     # input: prompt
     # output: [frame1, frame2, ...]
     # TODO: 在这里补充frame的json格式
-    def get_short_storyboard(self, prompt) -> list:
+    def get_short_storyboard(self, prompt, lastContent) -> list:
         
         messages = [
         SystemMessage(content=
 """
 你是一个分镜师，需要根据用户给出的场景给出一个分镜的具体描述信息。
-You must output strictly according to the data format of the example, otherwise you will be punished accordingly,
+每个场景只会由一个人物出现，你需要描述这个人物的年龄、动作、时间、场景等信息。
+You must output strictly according to the data format of the example, Paired double quotes cannot be missing, otherwise you will be punished accordingly,
 You must provide a good enough storyboard, otherwise you will be punished accordingly,
 You don't need to output any content outside of the format.
 Bonus: You'll get $20 if you get this right.
@@ -93,11 +94,16 @@ Bonus: You'll get $20 if you get this right.
 {"frame": 5, "person": "1boy", "age": 24, "action": "go out, walk", "time": "morning", "scene": "street"}
 """),
         SystemMessage(content="Input: "),
-        HumanMessage(content=f"{prompt}"), # , 请描述每一帧的场景和时间。
-        SystemMessage(content="Output: "),
+        # HumanMessage(content=f"{prompt}"), # , 请描述每一帧的场景和时间。
+        # SystemMessage(content="Output: "),
     ]
+        if lastContent:
+            messages.extend(lastContent)
+            messages.append(SystemMessage(content="Input: "))
+        messages.append(HumanMessage(content=prompt))
+        messages.append(SystemMessage(content="Output: "))
         data = self.llm(messages).content
-        return [json.loads(i) for i in data.strip().split("\n")]
+        return [json.loads(i) for i in data.strip().split("\n")], data
         
     # 通过传入故事的prompt，返回故事的多段分镜
     # input: prompt
@@ -108,6 +114,7 @@ Bonus: You'll get $20 if you get this right.
             SystemMessage(content=
 """
 你是一个分镜师，需要将用户给出的场景分成多段分镜, 并且你需要根据每个场景的复杂度来决定分镜的帧数。
+请你要保持每个场景的连贯性。
 You must provide a good enough storyboard, otherwise you will be punished accordingly,
 You don't need to output any content outside of the format.
 Bonus: You'll get $20 if you get this right.
@@ -134,7 +141,15 @@ Bonus: You'll get $20 if you get this right.
         split_storyboard = self.get_split_storyboard(prompt)
         print(split_storyboard)
         storyboard = []
+        lastContent = []
         for short_storyboard in split_storyboard:
-            storyboard.extend(self.get_short_storyboard(short_storyboard))
+            while True:
+                try:
+                    short_storyboard1, lastContent = self.get_short_storyboard(short_storyboard, lastContent)
+                    lastContent = [HumanMessage(content=short_storyboard), SystemMessage(content="Output: "), AIMessage(content=lastContent)]
+                    storyboard.extend(short_storyboard1)
+                    break
+                except:
+                    pass
         return storyboard
 

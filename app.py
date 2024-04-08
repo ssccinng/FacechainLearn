@@ -13,7 +13,7 @@ from llm2sd import change_to_animatediff_prompt, generate_animatediff_config
 import json
 
  
-animateDiff_Model_Path = 'animatediff-cli-prompt-travelt/data/models/sd'
+animateDiff_Model_Path = 'animatediff-cli-prompt-travel/data/models/sd'
 facechain_lora_Model_Path = 'facechain/worker_data/qw/ly261666/cv_portrait_model'
 
 SDXL_BASE_MODEL_ID = 'AI-ModelScope/stable-diffusion-xl-base-1.0'

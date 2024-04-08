@@ -1,6 +1,7 @@
 import gradio as gr
 import os
 from facellm import facellm, facellm_test
+import sys
 
 from facechain.facechain.utils import snapshot_download, check_ffmpeg, set_spawn_method, project_dir, join_worker_data_dir
 # os.environ["http_proxy"] = "http://127.0.0.1:10800"
@@ -78,7 +79,27 @@ def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt
     outputpath = [f"{outputpath}/{file}" for file in outputpath1 if file.endswith('.gif')][0]
     return outputpath
 
-def train_lora(images):
+def train_lora(uuid,
+                             base_model_name,
+                             instance_images,
+                             output_model_name,):
+
+    os.system(f"""accelerate launch facechain/facechain/train_text_to_image_lora.py \
+    --pretrained_model_name_or_path=ly261666/cv_portrait_model \
+    --revision=v2.0 \
+    --sub_path=film/film \
+    --dataset_name=./imgs \
+    --output_dataset_name=./processed \
+    --caption_column="text" \
+    --resolution=512 --random_flip \
+    --train_batch_size=1 \
+    --num_train_epochs=200 --checkpointing_steps=5000 \
+    --learning_rate=1.5e-04 --lr_scheduler="cosine" --lr_warmup_steps=0 \
+    --seed=42 \
+    --output_dir=./faceoutput \
+    --lora_r=4 --lora_alpha=32 \
+    --lora_text_encoder_r=32 --lora_text_encoder_alpha=32""")
+    #   --resume_from_checkpoint='fromfacecommon'
     # 在这里添加你的Lora训练代码
     return "训练完成"
 

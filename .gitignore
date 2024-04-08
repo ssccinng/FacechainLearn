@@ -13,3 +13,7 @@ out_config/config20240408113555.json
 /.vs
 __pycache__/facellm.cpython-310.pyc
 __pycache__/facellm.cpython-310.pyc
+imgs/*
+processed_labeled/*
+processed/*
+faceoutput/*

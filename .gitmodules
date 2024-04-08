@@ -1,5 +1,5 @@
-[submodule "animatediff-cli-prompt-travelt"]
-	path = animatediff-cli-prompt-travelt
+[submodule "animatediff-cli-prompt-travel"]
+	path = animatediff-cli-prompt-travel
 	url = https://github.com/s9roll7/animatediff-cli-prompt-travel
 [submodule "facechain"]
 	path = facechain

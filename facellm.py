@@ -64,6 +64,7 @@ class facellm_test:
             openai_api_base=openai_api_base,
             openai_api_key=api_key,
             streaming=False,
+            max_tokens=1024
         )
 
     # 通过传入分割后故事的prompt，返回分镜

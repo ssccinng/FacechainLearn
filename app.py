@@ -55,6 +55,8 @@ def update_output_model(uuid):
 
 def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt, framecnt, width, height):
     framecnt = int(framecnt)
+    width = int(width)
+    height = int(height)
     # fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
     fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "http://localhost:8000/v1","gpt-3.5-turbo-16k")
     sb = fllm.get_storyboard_from_prompt(prompt)

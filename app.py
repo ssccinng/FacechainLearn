@@ -57,7 +57,7 @@ def update_output_model(uuid):
 
     return gr.Radio.update(choices=folder_list)
 
-def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt, framecnt, width, height, animatediff_motion_model):
+def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt, framecnt, width, height, animatediff_motion_model, nprompt):
     framecnt = int(framecnt)
     width = int(width)
     height = int(height)
@@ -65,7 +65,7 @@ def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt
     fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", openai_api_baseurl,"gpt-3.5-turbo-16k")
     sb = fllm.get_storyboard_from_prompt(prompt)
     prompt = change_to_animatediff_prompt(sb, framecnt)
-    file = generate_animatediff_config(prompt, f"models/sd/{model}", lora_model, animatediff_motion_model)
+    file = generate_animatediff_config(prompt, f"models/sd/{model}", lora_model, negative_prompt=nprompt, animatediff_motion_model=animatediff_motion_model)
 
     # 调用animateDiff生成图片
     # 修改运行路径到animatediff-cli-prompt-travel
@@ -245,7 +245,7 @@ def generate_input():
                              openai_api_baseurl,
                              prompt,
                              framecnt,
-                             width, height, animatediff_motion_model
+                             width, height, animatediff_motion_model, nprompt
                          ],
                          outputs=image)
     pass

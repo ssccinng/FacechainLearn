@@ -3,6 +3,8 @@ import os
 from facellm import facellm, facellm_test
 import sys
 
+from lorahelper import changelora
+
 from facechain.facechain.utils import snapshot_download, check_ffmpeg, set_spawn_method, project_dir, join_worker_data_dir
 # os.environ["http_proxy"] = "http://127.0.0.1:10800"
 os.environ["https_proxy"] = "http://127.0.0.1:10800"
@@ -99,6 +101,8 @@ def train_lora(uuid,
     --output_dir=./faceoutput \
     --lora_r=4 --lora_alpha=32 \
     --lora_text_encoder_r=32 --lora_text_encoder_alpha=32""")
+    changelora('faceoutput/pytorch_lora_weights.bin', f'faceoutput/{output_model_name}.safetensors')
+
     #   --resume_from_checkpoint='fromfacecommon'
     # 在这里添加你的Lora训练代码
     return "训练完成"

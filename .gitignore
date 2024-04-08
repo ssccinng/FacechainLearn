@@ -17,3 +17,4 @@ imgs/*
 processed_labeled/*
 processed/*
 faceoutput/*
+__pycache__/*

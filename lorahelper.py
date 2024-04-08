@@ -11,7 +11,7 @@ import re
 import torch
 from safetensors.torch import save_file
 
-def changelora(src):
+def changelora(src, dst):
     # dir = "faceoutput"
     newDict = dict()
     # 新版diffusers需要改为pytorch_model.bin
@@ -28,6 +28,6 @@ def changelora(src):
 
         newDict[newKey] = checkpoint[key]
 
-    newLoraName = src.replace('.bin', '.safetensors')
-    print("Saving " + newLoraName)
-    save_file(newDict, newLoraName)
+    # newLoraName = src.replace('.bin', '.safetensors')
+    print("Saving " + dst)
+    save_file(newDict, dst)

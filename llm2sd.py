@@ -18,14 +18,14 @@ def change_to_animatediff_prompt(storyboardlist, max_frame = 100):
     framecnt = len(storyboardlist)
     idx = 0
     for storyboard in storyboardlist:
-        res[idx * max_frame // framecnt] = f'{storyboard.get("person", "1boy")},{storyboard.get("age", "")} year old,{storyboard.get("time", "")},{storyboard.get("status", "")},{storyboard.get("scene", "")}'
+        res[idx * max_frame // framecnt] = f'{storyboard.get("person", "1boy")},{storyboard.get("age", 0)} years old,{"old,white hair" if storyboard.get("age", 0) > 60 else ""},{storyboard.get("time", "")},{storyboard.get("status", "")},{storyboard.get("scene", "")}'
         idx += 1
         # print(f'"{framecnt}" : "a handsome man,{storyboard["person"]},{storyboard["age"]} year old,{storyboard["time"]},{storyboard["action"]},{storyboard["scene"]}",')
         # framecnt += 10   
         # Process the storyboard as needed
     return res
 
-def generate_animatediff_config(storyboard, model = None, lora_model = None, negative_prompt = None):
+def generate_animatediff_config(storyboard, model = None, lora_model = None, negative_prompt = None, animatediff_motion_model = None):
     configTemplate = json.load(open('config_template/template.json'))
 
     configTemplate['prompt_map'] = storyboard
@@ -34,10 +34,13 @@ def generate_animatediff_config(storyboard, model = None, lora_model = None, neg
         configTemplate['path'] = model
 
     if lora_model:
-        configTemplate['prompt']['lora_map'] = {f'../../faceoutput/{lora_model}': 1.0}
+        configTemplate['lora_map'] = {f'../../faceoutput/{lora_model}': 1.0}
     
     if negative_prompt:
-        configTemplate['prompt']['n_prompt'] = negative_prompt
+        configTemplate['n_prompt'] = negative_prompt
+    if animatediff_motion_model:
+        configTemplate['motion_module'] = animatediff_motion_model
+
 
     # 获取当前时间作为文件名
     import time

@@ -17,6 +17,7 @@ import json
 
  
 animateDiff_Model_Path = 'animatediff-cli-prompt-travel/data/models/sd'
+animateDiff_Motion_Model_Path = 'animatediff-cli-prompt-travel/data/models/motion-module'
 facechain_lora_Model_Path = 'faceoutput'
 
 SDXL_BASE_MODEL_ID = 'AI-ModelScope/stable-diffusion-xl-base-1.0'
@@ -56,7 +57,7 @@ def update_output_model(uuid):
 
     return gr.Radio.update(choices=folder_list)
 
-def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt, framecnt, width, height):
+def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt, framecnt, width, height, animatediff_motion_model):
     framecnt = int(framecnt)
     width = int(width)
     height = int(height)
@@ -64,7 +65,7 @@ def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt
     fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", openai_api_baseurl,"gpt-3.5-turbo-16k")
     sb = fllm.get_storyboard_from_prompt(prompt)
     prompt = change_to_animatediff_prompt(sb, framecnt)
-    file = generate_animatediff_config(prompt, f"models/sd/{model}", lora_model)
+    file = generate_animatediff_config(prompt, f"models/sd/{model}", lora_model, animatediff_motion_model)
 
     # 调用animateDiff生成图片
     # 修改运行路径到animatediff-cli-prompt-travel
@@ -208,7 +209,9 @@ def generate_input():
 
                     animateDiff_Models = [file for file in os.listdir(animateDiff_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt') ]
                     lora_models = [file for file in os.listdir(facechain_lora_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt')]
+                    animateDiff_Motion_Models = [file for file in os.listdir(animateDiff_Motion_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt')]
                     model = gr.components.Dropdown(choices=animateDiff_Models, label="选择模型")
+                    animatediff_motion_model = gr.components.Dropdown(choices=animateDiff_Motion_Models, label="选择Animatediff模型")
                     lora_model = gr.components.Dropdown(choices=lora_models, label="选择Lora模型")
                     prompt = gr.components.Textbox(lines=2, placeholder='在这里输入prompt...', label="输入Prompt")
                     with gr.Row():
@@ -242,7 +245,7 @@ def generate_input():
                              openai_api_baseurl,
                              prompt,
                              framecnt,
-                             width, height
+                             width, height, animatediff_motion_model
                          ],
                          outputs=image)
     pass

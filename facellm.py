@@ -81,6 +81,7 @@ f"""
 person只能是1boy,1girl,1women,1man等直接关于性别的描述,年轻时用1boy或者1girl,年长时使用1man或者1women，不能包含职业等信息
 除了例子之外，用户给出的输入是连续的分镜，请你注意上下文的逻辑关系, 比如年龄是否增长，动作的连贯性等.
 每个场景只会由一个人物出现.
+age大于10的时候尽量采用10的倍数，比如20,30,40,50,60等.
 用户场景的主题是{theme}，请你依据这个主题在上下文建立必要的逻辑关系.
 You must output strictly according to the data format of the example, Paired double quotes cannot be missing, otherwise you will be punished accordingly,
 You must provide a good enough storyboard, otherwise you will be punished accordingly,

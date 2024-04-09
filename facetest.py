@@ -116,13 +116,13 @@ Dutch Camera Angle
 {"frame": 5, "person": "1boy", "age": 20, "status": "getting out of bed", "time": "morning"","screen_description": "front view,Medium Shot, upper body", "scene": "bedroom, bed, pillow, quilt, feet touching the floor"}
 {"frame": 6, "person": "1boy", "age": 20, "status": "stretching arms, walking towards the door"","screen_description": "Long Shot, Back view, full body", "time": "morning", "scene": "bedroom, bed, pillow, quilt, door"}
 """),
-        SystemMessage(content="Input: "),
         # HumanMessage(content=f"{prompt}"), # , 请描述每一帧的场景和时间。
         # SystemMessage(content="Output: "),
     ]
         if lastContent:
-            messages.extend(lastContent)
-            messages.append(SystemMessage(content="Input: "))
+            messages.append(SystemMessage(content="Last Storyboard: "))
+            messages.append(SystemMessage(content=lastContent))
+        messages.append(SystemMessage(content="Input: "),)
         messages.append(HumanMessage(content=prompt))
         messages.append(SystemMessage(content="Output: "))
         data = self.llm(messages).content
@@ -136,18 +136,22 @@ Dutch Camera Angle
         messages = [
             SystemMessage(content=
 f"""
-你是一个分镜师，需要将用户给出的场景分成多段分镜, 并且你需要根据每个场景的复杂度来决定分镜的帧数。总帧数为{cnt}。
+你是一个分镜师，需要将用户给出的场景分成多段分镜, 并且你需要根据每个场景的复杂度来决定分镜的帧数
 请你要保持每个场景的连贯性。
 You must provide a good enough storyboard, otherwise you will be punished accordingly,
 You don't need to output any content outside of the format.
 Bonus: You'll get $20 if you get this right.
 """),
+
         SystemMessage(content="Input: "),
         HumanMessage(content="一个男生工作日一天的生活"),
+        SystemMessage(content=f"split into 3 storyboards"),
+
         SystemMessage(content="Output: "),
         AIMessage(content='["一个男生早上起床时要做的事, 由10帧构成", "一个男生在学校上一节数学课的场景, 由5帧构成", "一个男生在家里做饭的场景, 由8帧构成"]'),
         SystemMessage(content="Input: "),
         HumanMessage(content=prompt),
+        SystemMessage(content=f"split into {cnt} storyboards"),
         SystemMessage(content="Output: "),
 
 
@@ -161,15 +165,15 @@ Bonus: You'll get $20 if you get this right.
     
     def get_storyboard_from_prompt(self, prompt, fcnt) -> list:
         # Get the storyboard from the prompt
-        split_storyboard = self.get_split_storyboard(prompt, fcnt // 20)
+        split_storyboard = self.get_split_storyboard(prompt, fcnt // 100)
         print(split_storyboard)
         storyboard = []
-        lastContent = []
+        lastContent = None
         for short_storyboard in split_storyboard:
             while True:
                 try:
                     short_storyboard1, lastContent = self.get_short_storyboard(short_storyboard, lastContent, theme=prompt)
-                    lastContent = [HumanMessage(content=short_storyboard), SystemMessage(content="Output: "), AIMessage(content=lastContent)]
+                    # lastContent = [HumanMessage(content=short_storyboard), SystemMessage(content="Output: "), AIMessage(content=lastContent)]
                     storyboard.extend(short_storyboard1)
                     break
                 except:

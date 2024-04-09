@@ -111,6 +111,8 @@ def train_lora(uuid,
     --lora_text_encoder_r=32 --lora_text_encoder_alpha=32""")
     modelpath = f'{facechain_lora_Model_Path}/{output_model_name}.safetensors'
     changelora(f'{facechain_lora_Model_Path}/pytorch_lora_weights.bin', modelpath)
+    # 删除原来的文件
+    os.remove(f'{facechain_lora_Model_Path}/pytorch_lora_weights.bin')
 
     #   --resume_from_checkpoint='fromfacecommon'
     # 在这里添加你的Lora训练代码

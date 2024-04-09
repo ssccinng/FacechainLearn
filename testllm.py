@@ -1,9 +1,10 @@
 from facellm import facellm_test
+from facetest import facellm_sci1
 
 from llm2sd import change_to_animatediff_prompt, generate_animatediff_config
 
-facellmt = facellm_test(api_key="EMPTY", openai_api_base="http://localhost:8000/v1", model_name="chatglm")
-sb = facellmt.get_storyboard_from_prompt("一个女孩一生的故事，详细一点")
+facellmt = facellm_sci1(api_key="EMPTY", openai_api_base="http://localhost:8000/v1", model_name="chatglm")
+sb = facellmt.get_storyboard_from_prompt("一个游戏主播的成长履历")
 # sb1 = facellmt.get_short_storyboard("一个游戏主播的成长履历, 由30帧构成")
 print(sb)
 # cc = """

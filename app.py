@@ -1,6 +1,7 @@
 import gradio as gr
 import os
 from facellm import facellm, facellm_test
+from facetest import facellm_sci1
 import sys
 
 from lorahelper import changelora
@@ -62,7 +63,7 @@ def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt
     width = int(width)
     height = int(height)
     # fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
-    fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", openai_api_baseurl,"gpt-3.5-turbo-16k")
+    fllm = facellm_sci1(openai_api_key if openai_api_key != "" else "EMPTY", openai_api_baseurl,"gpt-3.5-turbo-16k")
     sb = fllm.get_storyboard_from_prompt(prompt)
     prompt = change_to_animatediff_prompt(sb, framecnt)
     file = generate_animatediff_config(prompt, f"models/sd/{model}", lora_model, negative_prompt=nprompt, animatediff_motion_model=f"models/motion-module/{animatediff_motion_model}")
@@ -105,11 +106,11 @@ def train_lora(uuid,
     --num_train_epochs=200 --checkpointing_steps=5000 \
     --learning_rate=1.5e-04 --lr_scheduler="cosine" --lr_warmup_steps=0 \
     --seed=42 \
-    --output_dir=./faceoutput \
+    --output_dir=./{facechain_lora_Model_Path} \
     --lora_r=4 --lora_alpha=32 \
     --lora_text_encoder_r=32 --lora_text_encoder_alpha=32""")
-    modelpath = f'faceoutput/{output_model_name}.safetensors'
-    changelora('faceoutput/pytorch_lora_weights.bin', modelpath)
+    modelpath = f'{facechain_lora_Model_Path}/{output_model_name}.safetensors'
+    changelora(f'{facechain_lora_Model_Path}/pytorch_lora_weights.bin', modelpath)
 
     #   --resume_from_checkpoint='fromfacecommon'
     # 在这里添加你的Lora训练代码

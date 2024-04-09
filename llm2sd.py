@@ -18,7 +18,7 @@ def change_to_animatediff_prompt(storyboardlist, max_frame = 100):
     framecnt = len(storyboardlist)
     idx = 0
     for storyboard in storyboardlist:
-        res[idx * max_frame // framecnt] = f'{storyboard.get("person", "1boy")},{storyboard.get("age", 0)} years old,{"old,white hair" if storyboard.get("age", 0) > 60 else ""},{storyboard.get("time", "")},{storyboard.get("status", "")},{storyboard.get("scene", "")}'
+        res[idx * max_frame // framecnt] = f'{storyboard.get("person", "1boy")},{storyboard.get("age", 0)} years old,{"old,white hair" if storyboard.get("age", 0) > 60 else ""},{storyboard.get("screen_description", "")},{storyboard.get("time", "")},{storyboard.get("status", "")},{storyboard.get("scene", "")}'
         idx += 1
         # print(f'"{framecnt}" : "a handsome man,{storyboard["person"]},{storyboard["age"]} year old,{storyboard["time"]},{storyboard["action"]},{storyboard["scene"]}",')
         # framecnt += 10   

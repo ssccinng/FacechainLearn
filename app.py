@@ -20,7 +20,7 @@ import json
 animateDiff_Model_Path = 'animatediff-cli-prompt-travel/data/models/sd'
 animateDiff_Motion_Model_Path = 'animatediff-cli-prompt-travel/data/models/motion-module'
 facechain_lora_Model_Path = 'faceoutput'
-
+defalut_n_prompt = "FastNegativeV2, (bad-artist:1), (worst quality, low quality:1.4), (bad_prompt_version2:0.8), bad-hands-5, lowres, bad anatomy, bad hands, ((text)), (watermark), error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, ((username)), blurry, (extra limbs), bad-artist-anime, badhandv4, EasyNegative, ng_deepnegative_v1_75t, verybadimagenegative_v1.3, BadDream, (three hands:1.3), (three legs:1.2), (more than two hands:1.4), (more than two legs,:1.4), label, watermark, nsfw, "
 SDXL_BASE_MODEL_ID = 'AI-ModelScope/stable-diffusion-xl-base-1.0'
 
 character_model = 'ly261666/cv_portrait_model'
@@ -222,8 +222,8 @@ def generate_input():
                         width = gr.Number(label="图片宽度(Width)", default=512, min=1, max=1000, step=1, value=512)
                         height = gr.Number(label="图片高度(Height)", default=512, min=1, max=1000, step=1, value=512)
                         framecnt = gr.Number(label="帧数(Frame count)", default=100, min=1, max=1000, step=1, value=300)
-                    with gr.Accordion("高级选项(Advanced options)"):
-                        nprompt = gr.Textbox(label="负向提示词(Advanced options)", lines=1)
+                    with gr.Accordion("高级选项(Advanced options)", default_open=False):
+                        nprompt = gr.Textbox(label="负向提示词(Advanced options)", lines=1, value=defalut_n_prompt)
                     with gr.Row():
                         run_button = gr.Button("生成图片", )
                     image = gr.outputs.Image(type="filepath", label="生成的图片")

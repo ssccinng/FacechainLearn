@@ -33,7 +33,7 @@ person只能是1boy,1girl,1women,1man等直接关于性别的描述,年轻时用
 除了例子之外，用户给出的输入是连续的分镜，请你注意上下文的逻辑关系, 比如年龄是否增长，动作的连贯性等.
 每个场景只会由一个人物出现.
 年龄大于10的时候输出10的倍数，比如20,30,40,50,60等.
-用户场景的主题是{theme}，请你依据这个主题在上下文建立必要的逻辑关系. 比如短时间内年龄不会发生剧烈变化，动作的连贯性等.
+用户场景的主题是{theme}，请你依据这个主题在上下文建立必要的逻辑关系. 比如短时间内年龄不会发生剧烈变化.
 You must output strictly according to the data format of the example, Paired double quotes cannot be missing, otherwise you will be punished accordingly,
 You must provide a good enough storyboard, otherwise you will be punished accordingly,
 You don't need to output any content outside of the format.
@@ -132,11 +132,11 @@ Dutch Camera Angle
     # input: prompt
     # output: [storyboard1, storyboard2, ...]
 
-    def get_split_storyboard(self, prompt) -> list[str]:
+    def get_split_storyboard(self, prompt, cnt) -> list[str]:
         messages = [
             SystemMessage(content=
-"""
-你是一个分镜师，需要将用户给出的场景分成多段分镜, 并且你需要根据每个场景的复杂度来决定分镜的帧数。
+f"""
+你是一个分镜师，需要将用户给出的场景分成多段分镜, 并且你需要根据每个场景的复杂度来决定分镜的帧数。总帧数为{cnt}。
 请你要保持每个场景的连贯性。
 You must provide a good enough storyboard, otherwise you will be punished accordingly,
 You don't need to output any content outside of the format.
@@ -159,9 +159,9 @@ Bonus: You'll get $20 if you get this right.
     # input: prompt
     # output: [frame1, frame2, ...]
     
-    def get_storyboard_from_prompt(self, prompt) -> list:
+    def get_storyboard_from_prompt(self, prompt, fcnt) -> list:
         # Get the storyboard from the prompt
-        split_storyboard = self.get_split_storyboard(prompt)
+        split_storyboard = self.get_split_storyboard(prompt, fcnt // 20)
         print(split_storyboard)
         storyboard = []
         lastContent = []

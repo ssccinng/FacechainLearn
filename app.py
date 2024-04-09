@@ -64,7 +64,7 @@ def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt
     height = int(height)
     # fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
     fllm = facellm_sci1(openai_api_key if openai_api_key != "" else "EMPTY", openai_api_baseurl,"gpt-3.5-turbo-16k")
-    sb = fllm.get_storyboard_from_prompt(prompt)
+    sb = fllm.get_storyboard_from_prompt(prompt, framecnt)
     prompt = change_to_animatediff_prompt(sb, framecnt)
     file = generate_animatediff_config(prompt, f"models/sd/{model}", lora_model, negative_prompt=nprompt, animatediff_motion_model=f"models/motion-module/{animatediff_motion_model}")
 
@@ -219,7 +219,7 @@ def generate_input():
                     with gr.Row():
                         width = gr.Number(label="图片宽度(Width)", default=512, min=1, max=1000, step=1, value=512)
                         height = gr.Number(label="图片高度(Height)", default=512, min=1, max=1000, step=1, value=512)
-                        framecnt = gr.Number(label="帧数(Frame count)", default=100, min=1, max=1000, step=1, value=100)
+                        framecnt = gr.Number(label="帧数(Frame count)", default=100, min=1, max=1000, step=1, value=300)
                     with gr.Accordion("高级选项(Advanced options)"):
                         nprompt = gr.Textbox(label="负向提示词(Advanced options)", lines=1)
                     with gr.Row():

@@ -42,3 +42,4 @@ python app.py
 需要提前准备好sd模型和animatediff模型  
 sd模型路径: animatediff-cli-prompt-travel/data/models/sd  
 animatediff模型路径: animatediff-cli-prompt-travel/data/models/motion-module
+更新模型后需要重开服务

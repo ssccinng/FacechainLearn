@@ -31,3 +31,7 @@ def changelora(src, dst):
     # newLoraName = src.replace('.bin', '.safetensors')
     print("Saving " + dst)
     save_file(newDict, dst)
+
+
+if __name__ == '__main__':
+    changelora("faceoutput/zqd.bin", "faceoutput/zqd.safetensors")

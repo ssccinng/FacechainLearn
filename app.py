@@ -282,7 +282,7 @@ with gr.Blocks(css='style.css') as demo:
     with gr.Tabs():
         with gr.Tab("Lora训练"):
             train_input()
-        with gr.Tab("生成图片"):
+        with gr.Tab("生成视频"):
             generate_input()
         with gr.Tab("关于"):
             gr.Label("这是一个关于页面")

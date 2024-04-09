@@ -72,7 +72,8 @@ def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt
 
     # 切换到别的conda环境
     # os.system("conda activate animatept")
-    path = os.system(f"python animatediff-cli-prompt-travel/src/animatediff/__main__.py generate -c {file} -W {width} -H {height} -L {framecnt} -C 16")
+    # path = os.system(f"python animatediff-cli-prompt-travel/src/animatediff/__main__.py generate -c {file} -W {width} -H {height} -L {framecnt} -C 16")
+    path = os.system(f"{sys.executable} animatediff-cli-prompt-travel/src/animatediff/__main__.py generate -c {file} -W {width} -H {height} -L {framecnt} -C 16")
     # cli.command("generate -c  config/prompts/test.json -W 512 -H 512 -L 48 -C 16")
     # cli.invoke(command, param="generate -c  config/prompts/test.json -W 512 -H 512 -L 48 -C 16")
     # print(path)

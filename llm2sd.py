@@ -37,7 +37,7 @@ def generate_animatediff_config(storyboard, model = None, lora_model = None, neg
         configTemplate['lora_map'] = {f'../../faceoutput/{lora_model}': 1.0}
     
     if negative_prompt:
-        configTemplate['n_prompt'] = negative_prompt
+        configTemplate['n_prompt'] = [negative_prompt]
     if animatediff_motion_model:
         configTemplate['motion_module'] = animatediff_motion_model
 

@@ -1,0 +1,6 @@
+chardet
+gradio==3.50.2
+huggingface-hub==0.22.2
+langchain==0.1.14
+transformers==4.34.1
+openai==1.16.2

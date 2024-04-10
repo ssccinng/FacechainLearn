@@ -8,7 +8,7 @@ from lorahelper import changelora
 
 from facechain.facechain.utils import snapshot_download, check_ffmpeg, set_spawn_method, project_dir, join_worker_data_dir
 # os.environ["http_proxy"] = "http://127.0.0.1:10800"
-os.environ["https_proxy"] = "http://127.0.0.1:10800"
+# os.environ["https_proxy"] = "http://127.0.0.1:10800"
 
 # os.chdir('animatediff-cli-prompt-travel')
 from animatediff.cli import cli

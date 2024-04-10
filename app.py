@@ -213,6 +213,7 @@ def generate_input():
 
                     animateDiff_Models = [file for file in os.listdir(animateDiff_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt') ]
                     lora_models = [file for file in os.listdir(facechain_lora_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt')]
+                    lora_models.append("")
                     animateDiff_Motion_Models = [file for file in os.listdir(animateDiff_Motion_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt')]
                     model = gr.components.Dropdown(choices=animateDiff_Models, label="选择模型")
                     animatediff_motion_model = gr.components.Dropdown(choices=animateDiff_Motion_Models, label="选择Animatediff模型")

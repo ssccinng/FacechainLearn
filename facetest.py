@@ -27,21 +27,22 @@ class facellm_sci1:
         messages = [
         SystemMessage(content=
 f"""
-你是一个分镜师，需要根据用户给出的场景给出分镜，每个场景的帧数由你决定，但是请保持逻辑连贯性。
-请你需要遵从逻辑，保持每个场景的连贯性，包括年龄动作等.
-person只能是1boy,1girl,1women,1man等直接关于性别的描述,年轻时用1boy或者1girl,年长时使用1man或者1women，不能包含职业等信息
-除了例子之外，用户给出的输入是连续的分镜，请你注意上下文的逻辑关系, 比如年龄是否增长，动作的连贯性等.
-每个场景只会由一个人物出现.
-年龄大于10的时候输出10的倍数，比如20,30,40,50,60等.
-用户场景的主题是{theme}，请你依据这个主题在上下文建立必要的逻辑关系. 比如短时间内年龄不会发生剧烈变化.
-You must output strictly according to the data format of the example, Paired double quotes cannot be missing, otherwise you will be punished accordingly,
-You must provide a good enough storyboard, otherwise you will be punished accordingly,
+You are a storyboard artist and need to provide storyboards based on the scenes given by the user. The number of frames for each scene is up to you, but please maintain logical coherence.
+You need to follow the logic and maintain the coherence of each scene, including age, actions, etc.
+The 'person' can only be described directly in terms of gender, such as 1boy, 1girl, 1woman, 1man, etc. Use 1boy or 1girl for young age and 1man or 1woman for older age. Do not include information about occupation, etc.
+Please continue the story from the (previous storyboard) and write a new storyline, Character settings need to be consistent or logical.
+You must provide an (person's age) that conforms to logical changes, otherwise you will be punished!
+Each scene will only have one character.
+When the age is greater than 10, output multiples of 10, such as 20, 30, 40, 50, 60, etc.
+The theme of the user's scene is {theme}, please establish necessary logical relationships based on this theme in the context. For example, age will not change dramatically in a short period of time.
+You must output strictly according to the data format of the example. Paired double quotes cannot be missing, otherwise you will be punished accordingly.
+You must provide a good enough storyboard, otherwise you will be punished accordingly.
 You don't need to output any content outside of the format.
 Bonus: You'll get $20 if you get this right.
 """),
 SystemMessage(content="""
-以下是一些常见的分镜描述的术语，你可以参考这些术语来描述你的分镜。
-一、视角与方向：
+Here are some common terms for describing storyboards that you can use as reference.
+1. Perspective and Direction:
 front view
 Profile view / from side
 half-front view
@@ -56,7 +57,7 @@ looking up at the camera
 looking down at the camera
 looking sideways at the camera
 
-二、画面范围：
+2. Frame Range:
 upper body / waist up
 Thigh up
 knees up
@@ -80,7 +81,7 @@ Isolate the subject’s hands
 Isolate the subject’s legs
 Isolate the subject’s torso
 
-三、镜头远近：
+3. Shot Distance:
 Close-up Shot
 Medium Shot
 Long Shot / wide shots / establishing shots
@@ -92,7 +93,7 @@ Master Shot
 POV Shot
 Establishing Shot
 
-四、机位、拍摄角度：
+4、Positioning, shooting angle：
 low-angle shot
 Ground Level Shot
 Knee Level Shot
@@ -120,8 +121,11 @@ Dutch Camera Angle
         # SystemMessage(content="Output: "),
     ]
         if lastContent:
-            messages.append(SystemMessage(content="Last Storyboard: "))
-            messages.append(SystemMessage(content=lastContent))
+            messages.append(SystemMessage(content=f"previous storyboard: {lastContent}"))
+            # messages.append(SystemMessage(content=lastContent))
+        else:
+            messages.append(SystemMessage(content="previous storyboard: None"))
+            # messages.append(SystemMessage(content="None"))
         messages.append(SystemMessage(content="Input: "),)
         messages.append(HumanMessage(content=prompt))
         messages.append(SystemMessage(content="Output: "))
@@ -136,9 +140,10 @@ Dutch Camera Angle
         messages = [
             SystemMessage(content=
 f"""
-你是一个分镜师，需要将用户给出的场景分成多段分镜, 并且你需要根据每个场景的复杂度来决定分镜的帧数
-请你要保持每个场景的连贯性。
-You must provide a good enough storyboard, otherwise you will be punished accordingly,
+You are a storyboard artist and need to divide the given scenes into multiple storyboards. You should determine the number of frames for each scene based on its complexity.
+Please ensure the coherence of each scene.
+The number of frames in each scene needs to be less than 10
+You must provide a good enough storyboard, otherwise you will be punished accordingly.
 You don't need to output any content outside of the format.
 Bonus: You'll get $20 if you get this right.
 """),

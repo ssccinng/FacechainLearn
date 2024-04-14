@@ -90,7 +90,12 @@ def train_lora(uuid,
                              instance_images,
                              output_model_name,):
     
-    imgfolder = f'./imgs/{output_model_name}'
+    imgfolder = f'./imgs/{output_model_name}/'
+
+    # if not os.path.exists(imgfolder):
+
+
+    os.makedirs(imgfolder, exist_ok=True)
     # 把图片下载到facechain/facechain/imgs文件夹下
     for file in instance_images:
         shutil.copy(file["name"], imgfolder)

@@ -170,7 +170,7 @@ Bonus: You'll get $20 if you get this right.
     
     def get_storyboard_from_prompt(self, prompt, fcnt) -> list:
         # Get the storyboard from the prompt
-        split_storyboard = self.get_split_storyboard(prompt, fcnt // 100)
+        split_storyboard = self.get_split_storyboard(prompt, max(fcnt // 100, 1))
         print(split_storyboard)
         storyboard = []
         lastContent = None

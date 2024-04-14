@@ -1,7 +1,14 @@
 # FacechainLearn
 
 ## Installation
-
+如果使用atomgit
+```shell
+https://atomgit.com/blink_zero/FaceChain_competition
+```
+如果使用github
+```shell
+git clone --recursive https://github.com/ssccinng/FacechainLearn
+```
 1. 构建conda虚拟环境
 
 ```shell
@@ -23,9 +30,22 @@ pip install -r requirements.txt
 
 4. 安装Facechain
 请参照facechain的安装文档安装facechain
+进入facechain目录(请确保在项目根目录执行这个指令)
+```shell
+cd facechain
+pip install -r requirements.txt
+pip3 install -U openmim 
+# install mmcv-full with, ref: https://mmcv.readthedocs.io/en/latest/get_started/installation.html
+mim install mmcv-full==1.7.2
+```
 
 5. 安装animatediff-cli-prompt-travel
 请参照animatediff-cli-prompt-travel的安装文档安装animatediff-cli-prompt-travel, 其中pytorch无需安装
+进入animatediff-cli-prompt-travel目录(请确保在项目根目录执行这个指令)
+```shell
+cd animatediff-cli-prompt-travel
+python -m pip install -e .
+```
 
 
 ## Usage

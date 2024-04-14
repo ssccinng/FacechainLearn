@@ -3,12 +3,13 @@ import os
 from facellm import facellm, facellm_test
 from facetest import facellm_sci1
 import sys
+import shutil
 
 from lorahelper import changelora
 
 from facechain.facechain.utils import snapshot_download, check_ffmpeg, set_spawn_method, project_dir, join_worker_data_dir
 # os.environ["http_proxy"] = "http://127.0.0.1:10800"
-# os.environ["https_proxy"] = "http://127.0.0.1:10800"
+os.environ["https_proxy"] = "http://127.0.0.1:10800"
 
 # os.chdir('animatediff-cli-prompt-travel')
 from animatediff.cli import cli
@@ -92,7 +93,7 @@ def train_lora(uuid,
     imgfolder = f'./imgs/{output_model_name}'
     # 把图片下载到facechain/facechain/imgs文件夹下
     for file in instance_images:
-        snapshot_download(file, imgfolder)
+        shutil.copy(file["name"], imgfolder)
 
     os.system(f"""accelerate launch facechain/facechain/train_text_to_image_lora.py \
     --pretrained_model_name_or_path=ly261666/cv_portrait_model \

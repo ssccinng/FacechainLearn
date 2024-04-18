@@ -17,11 +17,68 @@ from llm2sd import change_to_animatediff_prompt, generate_animatediff_config
 
 import json
 
+chinese_to_english = {
+    "不指定": "",
+    "画面视角": "Viewpoint",
+    "正面": "Front view",
+    "左侧面": "Profile view / Side view, from left side",
+    "右侧面": "Profile view / Side view, from right side",
+    "半正面": "Half-front view",
+    "背面": "Back view",
+    "四分之一正面": "Quarter front view",
+    "角度和朝向": "Orientation",
+    "看向镜头": "Looking at the camera",
+    "面对镜头": "Facing the camera",
+    "转向镜头": "Turned towards the camera",
+    "不看镜头": "Looking away from the camera",
+    "背对镜头": "Facing away from the camera",
+    "抬头看向镜头": "Looking up at the camera",
+    "低头看向镜头": "Looking down at the camera",
+    "向侧面看向镜头": "Looking sideways at the camera",
+    "画面范围": "Frame",
+    "上半身或腰部以上": "Upper body / Waist up",
+    "大腿以上": "Thigh up",
+    "膝盖以上": "Knees up",
+    "全身": "Full body",
+    "镜头远近": "Zoom",
+    "放大主题": "Zoom in on the subject",
+    "缩小主题": "Zoom out on the subject",
+    "紧密地框选主题": "Frame the subject tightly",
+    "松散地框选主题": "Frame the subject loosely",
+    "将主题置于中心": "Center the subject",
+    "将主题移至左侧": "Move the subject to the left",
+    "将主题移至右侧": "Move the subject to the right",
+    "将主题向上移动": "Move the subject up",
+    "将主题向下移动": "Move the subject down",
+    "聚焦于主题的脸部": "Focus on the subject’s face",
+    "聚焦于主题的身体": "Focus on the subject’s body",
+    "模糊背景": "Blur the background",
+    "孤立主题，使其与背景分离": "Isolate the subject",
+    "吸引注意力至主题上": "Draw attention to the subject",
+    "避免裁剪主题": "Avoid cutting off the subject",
+    "孤立主题的手部，突出手部动作或姿态": "Isolate the subject’s hands",
+    "孤立主题的腿部，突出腿部动作或姿态": "Isolate the subject’s legs",
+    "孤立主题的躯干，突出躯干姿势或特征": "Isolate the subject’s torso",
+    "机位和拍摄角度": "Camera angle",
+    "低角度拍摄": "Low-angle shot",
+    "地面级别": "Ground Level Shot",
+    "齐膝位": "Knee Level Shot",
+    "齐臀位": "Hip Level Shot",
+    "齐肩位": "Shoulder Level Shot",
+    "齐眼位": "Eye Level Shot",
+    "高角度拍摄": "High-angle Shot",
+    "鸟瞰视角": "Bird’s-eye View",
+    "空中镜头": "Aerial Shot",
+    "荷兰式相机角度": "Dutch Camera Angle"
+}
+
+
+
  
 animateDiff_Model_Path = 'animatediff-cli-prompt-travel/data/models/sd'
 animateDiff_Motion_Model_Path = 'animatediff-cli-prompt-travel/data/models/motion-module'
 facechain_lora_Model_Path = 'faceoutput'
-defalut_n_prompt = "FastNegativeV2, (bad-artist:1), (worst quality, low quality:1.4), (bad_prompt_version2:0.8), bad-hands-5, lowres, bad anatomy, bad hands, ((text)), (watermark), error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, ((username)), blurry, (extra limbs), bad-artist-anime, badhandv4, EasyNegative, ng_deepnegative_v1_75t, verybadimagenegative_v1.3, BadDream, (three hands:1.3), (three legs:1.2), (more than two hands:1.4), (more than two legs,:1.4), label, watermark, nsfw, "
+defalut_n_prompt = "FastNegativeV2, (blurry), (bad-artist:1), (worst quality, low quality:1.4), (bad_prompt_version2:0.8), bad-hands-5, lowres, bad anatomy, bad hands, ((text)), (watermark), error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, ((username)), blurry, (extra limbs), bad-artist-anime, badhandv4, EasyNegative, ng_deepnegative_v1_75t, verybadimagenegative_v1.3, BadDream, (three hands:1.3), (three legs:1.2), (more than two hands:1.4), (more than two legs,:1.4), label, watermark, nsfw, "
 SDXL_BASE_MODEL_ID = 'AI-ModelScope/stable-diffusion-xl-base-1.0'
 
 character_model = 'ly261666/cv_portrait_model'
@@ -34,40 +91,63 @@ BASE_MODEL_MAP = {
 
 
 def update_output_model(uuid):
-
-    if not uuid:
-        if os.getenv("MODELSCOPE_ENVIRONMENT") == 'studio':
-            raise gr.Error("请登陆后使用! (Please login first)")
-        else:
-            uuid = 'qw'
-    folder_list = []
-    for idx, tmp_character_model in enumerate(['AI-ModelScope/stable-diffusion-xl-base-1.0', character_model]):
-        folder_path = join_worker_data_dir(uuid, tmp_character_model)
-        if not os.path.exists(folder_path):
-            continue
-        else:
-            files = os.listdir(folder_path)
-            for file in files:
-                file_path = os.path.join(folder_path, file)
-                if os.path.isdir(folder_path):
-                    file_lora_path = f"{file_path}/pytorch_lora_weights.bin"
-                    file_lora_path_swift = f"{file_path}/swift"
-                    if os.path.exists(file_lora_path) or os.path.exists(file_lora_path_swift):
-                        folder_list.append(file)
+    folder_list = os.listdir("faceoutput")
+    # if not uuid:
+    #     if os.getenv("MODELSCOPE_ENVIRONMENT") == 'studio':
+    #         raise gr.Error("请登陆后使用! (Please login first)")
+    #     else:
+    #         uuid = 'qw'
+    # folder_list = []
+    # for idx, tmp_character_model in enumerate(['AI-ModelScope/stable-diffusion-xl-base-1.0', character_model]):
+    #     folder_path = join_worker_data_dir(uuid, tmp_character_model)
+    #     if not os.path.exists(folder_path):
+    #         continue
+    #     else:
+    #         files = os.listdir(folder_path)
+    #         for file in files:
+    #             file_path = os.path.join(folder_path, file)
+    #             if os.path.isdir(folder_path):
+    #                 file_lora_path = f"{file_path}/pytorch_lora_weights.bin"
+    #                 file_lora_path_swift = f"{file_path}/swift"
+    #                 if os.path.exists(file_lora_path) or os.path.exists(file_lora_path_swift):
+    #                     folder_list.append(file)
     if len(folder_list) == 0:
         return gr.Radio.update(choices=[], value = None)
 
     return gr.Radio.update(choices=folder_list)
 
-def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt, framecnt, width, height, animatediff_motion_model, nprompt):
+def generate_animatediff_config_click(model, lora_model, openai_api_key, 
+                   openai_api_baseurl, prompt, framecnt, width, height, animatediff_motion_model, nprompt, camera_view, ext_prompt,ori_prompt):
+    framecnt = int(framecnt)
+    width = int(width)
+    height = int(height)
+    fllm = facellm_sci1(openai_api_key if openai_api_key != "" else "EMPTY", openai_api_baseurl,"gpt-3.5-turbo-16k")
+
+    sb = fllm.get_storyboard_from_prompt(prompt, framecnt)
+    extP = f"({chinese_to_english[camera_view]}),({chinese_to_english[ori_prompt]})"
+
+    prompt = change_to_animatediff_prompt(sb, framecnt, ext_prompt=extP, expositive = ext_prompt)
+    file,promptres = generate_animatediff_config(prompt,
+                                        f"models/sd/{model}", 
+                                        lora_model, 
+                                        negative_prompt=nprompt, animatediff_motion_model=f"models/motion-module/{animatediff_motion_model}")
+    return None, promptres
+
+def generate_image(model, lora_model, openai_api_key, 
+                   openai_api_baseurl, prompt, framecnt, width, height, animatediff_motion_model, nprompt, camera_view, ext_prompt, ori_prompt):
     framecnt = int(framecnt)
     width = int(width)
     height = int(height)
     # fllm = facellm_test(openai_api_key if openai_api_key != "" else "EMPTY", "gpt-3.5-turbo-16k", openai_api_baseurl)
     fllm = facellm_sci1(openai_api_key if openai_api_key != "" else "EMPTY", openai_api_baseurl,"gpt-3.5-turbo-16k")
     sb = fllm.get_storyboard_from_prompt(prompt, framecnt)
-    prompt = change_to_animatediff_prompt(sb, framecnt)
-    file = generate_animatediff_config(prompt, f"models/sd/{model}", lora_model, negative_prompt=nprompt, animatediff_motion_model=f"models/motion-module/{animatediff_motion_model}")
+
+    extP = f"({chinese_to_english[camera_view]}),({chinese_to_english[ori_prompt]})"
+    prompt = change_to_animatediff_prompt(sb, framecnt, ext_prompt=extP, expositive = ext_prompt)
+    file, promptres = generate_animatediff_config(prompt,
+                                        f"models/sd/{model}", 
+                                        lora_model, 
+                                        negative_prompt=nprompt, animatediff_motion_model=f"models/motion-module/{animatediff_motion_model}")
 
     # 调用animateDiff生成图片
     # 修改运行路径到animatediff-cli-prompt-travel
@@ -83,7 +163,7 @@ def generate_image(model, lora_model, openai_api_key, openai_api_baseurl, prompt
     # 找到gif结尾的文件
     outputpath1 = os.listdir(f'{outputpath}')
     outputpath = [f"{outputpath}/{file}" for file in outputpath1 if file.endswith('.gif')][0]
-    return outputpath
+    return outputpath, promptres
 
 def train_lora(uuid,
                              base_model_name,
@@ -218,6 +298,7 @@ def generate_input():
                     openai_api_baseurl = gr.Textbox(label="OpenAI API Base URL", value="http://localhost:8000/v1" , lines=1)
 
                     animateDiff_Models = [file for file in os.listdir(animateDiff_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt') ]
+                    update_button = gr.Button("更新模型(Update models)")
                     lora_models = [file for file in os.listdir(facechain_lora_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt')]
                     lora_models.append("")
                     animateDiff_Motion_Models = [file for file in os.listdir(animateDiff_Motion_Model_Path) if file.endswith('.bin') or file.endswith('.pt') or file.endswith('.pth') or file.endswith('.safetensors') or file.endswith('.ckpt')]
@@ -229,11 +310,30 @@ def generate_input():
                         width = gr.Number(label="图片宽度(Width)", default=512, min=1, max=1000, step=1, value=512)
                         height = gr.Number(label="图片高度(Height)", default=512, min=1, max=1000, step=1, value=512)
                         framecnt = gr.Number(label="帧数(Frame count)", default=100, min=1, max=1000, step=1, value=300)
+                    ex_positives = gr.Textbox(label ="额外提示(Extra prompt)")
+                    
+                    with gr.Row():
+                        # 用于不同种风格的单选按钮
+                        camera_view = gr.Radio(label="选择镜头(Select model)", choices=["不指定","背面", "正面", "左侧面", "右侧面", "半正面", "四分之一正面"], value="不指定")
+                    
+                    with gr.Row():
+                        Orientation = gr.Radio(label="选择朝向(Select Orientation)", choices=["不指定", "看向镜头", "面对镜头", "转向镜头", "不看镜头", "背对镜头", "抬头看向镜头", "低头看向镜头", "向侧面看向镜头"], value="不指定")
+                    
+                    
+
                     with gr.Accordion("高级选项(Advanced options)", default_open=False):
                         nprompt = gr.Textbox(label="负向提示词(Advanced options)", lines=1, value=defalut_n_prompt)
+
+                    with gr.Row():
+                        generate_config = gr.Button("生成配置文件(Generate config file)")
                     with gr.Row():
                         run_button = gr.Button("生成图片", )
+                    
+                    outconfig = gr.components.Textbox(label="生成的配置文件(Generated config file)")
+                    # image = gr.components.Textbox(label="生成的配置文件(Generated config file)")
                     image = gr.outputs.Image(type="filepath", label="生成的图片")
+
+        update_button.click(fn=update_output_model, inputs=[uuid], outputs=[lora_model], queue=False)
                     # output_message = gr.Label()
                     # gr.Markdown('''
                     #     使用说明（Instructions）：
@@ -256,9 +356,18 @@ def generate_input():
                              openai_api_baseurl,
                              prompt,
                              framecnt,
-                             width, height, animatediff_motion_model, nprompt
+                             width, height, animatediff_motion_model, nprompt, camera_view, ex_positives, Orientation
                          ],
-                         outputs=image)
+                         outputs=[image, outconfig])
+        generate_config.click(fn=generate_animatediff_config_click, inputs=[
+                             model,
+                             lora_model,
+                             openai_api_key,
+                             openai_api_baseurl,
+                             prompt,
+                             framecnt,
+                             width, height, animatediff_motion_model, nprompt, camera_view, ex_positives, Orientation
+                         ], outputs=[image,outconfig])
     pass
 
 

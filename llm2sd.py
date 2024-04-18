@@ -11,21 +11,22 @@ def read_jsonl_file(file_path):
     return data_list
 
 
-def change_to_animatediff_prompt(storyboardlist, max_frame = 100):
+def change_to_animatediff_prompt(storyboardlist, max_frame = 100, ext_prompt = None, expositive = None):
     # Convert the storyboard to the format required by the model
     # framecnt = 0
     res = {}
     framecnt = len(storyboardlist)
     idx = 0
     for storyboard in storyboardlist:
-        res[idx * max_frame // framecnt] = f'{storyboard.get("person", "1boy")},{storyboard.get("age", 0)} years old,{"old,white hair" if storyboard.get("age", 0) > 60 else ""},{storyboard.get("screen_description", "")},{storyboard.get("time", "")},{storyboard.get("status", "")},{storyboard.get("scene", "")}'
+        res[idx * max_frame // framecnt] = f'{expositive},{storyboard.get("person", "1boy")},{storyboard.get("age", 0)} years old,{"old,white hair" if storyboard.get("age", 0) > 60 else ""},{storyboard.get("screen_description", "")},{storyboard.get("time", "")},{storyboard.get("status", "")},{storyboard.get("scene", "")},{ext_prompt if ext_prompt else ""}'
         idx += 1
         # print(f'"{framecnt}" : "a handsome man,{storyboard["person"]},{storyboard["age"]} year old,{storyboard["time"]},{storyboard["action"]},{storyboard["scene"]}",')
         # framecnt += 10   
         # Process the storyboard as needed
     return res
 
-def generate_animatediff_config(storyboard, model = None, lora_model = None, negative_prompt = None, animatediff_motion_model = None):
+def generate_animatediff_config(storyboard, model = None,
+                                 lora_model = None, negative_prompt = None, animatediff_motion_model = None):
     configTemplate = json.load(open('config_template/template.json'))
 
     configTemplate['prompt_map'] = storyboard
@@ -47,7 +48,7 @@ def generate_animatediff_config(storyboard, model = None, lora_model = None, neg
     filename = time.strftime("%Y%m%d%H%M%S", time.localtime())
     filename = f'out_config/config{filename}.json'
     json.dump(configTemplate, open(filename, 'w'), indent=4)
-    return filename
+    return filename, json.dumps(configTemplate['prompt_map'])[1:-1]
 
 
 if __name__ == '__main__':

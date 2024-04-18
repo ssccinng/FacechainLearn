@@ -17,12 +17,13 @@ class facellm_sci1:
             streaming=False,
             max_tokens=1024
         )
-
+# You need to answer in English.
+ 
     # 通过传入分割后故事的prompt，返回分镜
     # input: prompt
     # output: [frame1, frame2, ...]
     # TODO: 在这里补充frame的json格式
-    def get_short_storyboard(self, prompt, lastContent, theme = "") -> list:
+    def get_short_storyboard(self, prompt, lastContent, theme = "", idx = 0) -> list:
         
         messages = [
         SystemMessage(content=
@@ -142,7 +143,7 @@ Dutch Camera Angle
 f"""
 You are a storyboard artist and need to divide the given scenes into multiple storyboards. You should determine the number of frames for each scene based on its complexity.
 Please ensure the coherence of each scene.
-The number of frames in each scene needs to be less than 10
+The number of frames in each scene needs to be less than 8
 You must provide a good enough storyboard, otherwise you will be punished accordingly.
 You don't need to output any content outside of the format.
 Bonus: You'll get $20 if you get this right.
@@ -153,7 +154,7 @@ Bonus: You'll get $20 if you get this right.
         SystemMessage(content=f"split into 3 storyboards"),
 
         SystemMessage(content="Output: "),
-        AIMessage(content='["一个男生早上起床时要做的事, 由10帧构成", "一个男生在学校上一节数学课的场景, 由5帧构成", "一个男生在家里做饭的场景, 由8帧构成"]'),
+        AIMessage(content='["一个男生早上起床时要做的事, 由5帧构成", "一个男生在学校上一节数学课的场景, 由5帧构成", "一个男生在家里做饭的场景, 由8帧构成"]'),
         SystemMessage(content="Input: "),
         HumanMessage(content=prompt),
         SystemMessage(content=f"split into {cnt} storyboards"),
@@ -174,12 +175,14 @@ Bonus: You'll get $20 if you get this right.
         print(split_storyboard)
         storyboard = []
         lastContent = None
+        idx = 1
         for short_storyboard in split_storyboard:
             while True:
                 try:
-                    short_storyboard1, lastContent = self.get_short_storyboard(short_storyboard, lastContent, theme=prompt)
+                    short_storyboard1, lastContent = self.get_short_storyboard(short_storyboard, lastContent, theme=prompt, idx=idx)
                     # lastContent = [HumanMessage(content=short_storyboard), SystemMessage(content="Output: "), AIMessage(content=lastContent)]
                     storyboard.extend(short_storyboard1)
+                    idx += 1
                     break
                 except:
                     pass

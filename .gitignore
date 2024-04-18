@@ -18,3 +18,4 @@ processed_labeled/*
 processed/*
 faceoutput/*
 __pycache__/*
+/data/models/lcm_lora
